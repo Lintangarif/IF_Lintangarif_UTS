@@ -225,12 +225,21 @@ function createCard(item) {
     const isFav = favorites.includes(item.id);
     const favClass = isFav ? 'active' : '';
     
+    // LOGIKA BARU: Cek tipe konten
+    let mediaContent = '';
+    if (item.type === 'video') {
+        // Jika VIDEO: Pakai tag video + autoplay + muted (wajib muted agar bisa autopaly)
+        mediaContent = `<video src="${item.videoUrl}" class="gallery-img" autoplay muted loop playsinline></video>`;
+    } else {
+        // Jika GAMBAR: Pakai tag img biasa
+        mediaContent = `<img src="${item.image}" class="gallery-img" loading="lazy">`;
+    }
+    
     const div = document.createElement('div'); 
     div.className = 'gallery-item';
     
     div.innerHTML = `
-        <img src="${item.image}" class="gallery-img">
-        <div class="badge-model" style="background:var(--accent-${item.category==='cloud'?'cloud':'offline'})">${badgeText}</div>
+        ${mediaContent}  <div class="badge-model" style="background:var(--accent-${item.category==='cloud'?'cloud':'offline'})">${badgeText}</div>
         <button class="btn-fav ${favClass}" onclick="toggleFavorite(event, ${item.id})">
             <i class="fas fa-heart"></i>
         </button>
@@ -242,13 +251,11 @@ function createCard(item) {
     `;
     
     div.onclick = (e) => { 
-        // Cegah klik kartu jika yang diklik adalah tombol love
         if(!e.target.closest('.btn-fav')) openModal(item); 
     };
     
     return div;
 }
-
 /* =========================================
    7. FILTER & PENCARIAN
    ========================================= */
@@ -431,3 +438,4 @@ function handleFeedbackSubmit(e) {
     showToast('Masukan Anda telah diterima. Terima kasih!'); 
     e.target.reset(); 
 }
+
