@@ -3,15 +3,8 @@
    ========================================= */
 const galleryData = [
     // --- GAMBAR (IMAGES) ---
-    { 
-        id: 1, 
-        title: "Neon Cyber Samurai", 
-        category: "cloud", 
-        model: "Midjourney v6", 
-        type: "image", 
-        image: "https://images.unsplash.com/photo-1620641788421-7f1c338e420c?q=80&w=1000&auto=format&fit=crop", 
-        prompt: "A futuristic samurai standing in neon rain, cyberpunk city background, highly detailed, 8k resolution, cinematic lighting --ar 16:9" 
-    },
+    // (Neon Cyber Samurai SUDAH DIHAPUS)
+    
     { 
         id: 2, 
         title: "Realistic Portrait LoRA", 
@@ -65,7 +58,6 @@ const galleryData = [
         category: "cloud", 
         model: "Sora", 
         type: "video", 
-        // Pastikan file ini ada di repo GitHub kamu
         videoUrl: "vidio1.mp4", 
         prompt: "Aerial drone shot of crashing waves on a rocky cliff, sunset lighting, 4k resolution, smooth motion" 
     },
@@ -160,7 +152,6 @@ function showPage(pageId) {
     document.querySelectorAll('.main-page-content').forEach(p => p.classList.remove('active'));
     document.getElementById(pageId + '-page').classList.add('active');
     
-    // Logic untuk tombol teks maupun ikon
     document.querySelectorAll('.page-nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
     const btn = document.querySelector(`button[onclick="showPage('${pageId}')"]`);
     if(btn) btn.classList.add('active');
@@ -169,7 +160,7 @@ function showPage(pageId) {
 }
 
 /* =========================================
-   6. GALLERY & CARD RENDERING (FIXED VIDEO)
+   6. GALLERY & CARD RENDERING
    ========================================= */
 function scrollGallery(id, val) {
     document.getElementById(id).scrollBy({ left: val, behavior: 'smooth' });
@@ -215,10 +206,8 @@ function createCard(item) {
     // --- LOGIKA THUMBNAIL (VIDEO AUTOPLAY) ---
     let mediaContent = '';
     if (item.type === 'video') {
-        // Autoplay, Muted, Loop = Video bergerak sendiri tanpa suara
         mediaContent = `<video src="${item.videoUrl}" class="gallery-img" autoplay muted loop playsinline></video>`;
     } else {
-        // Gambar Biasa
         mediaContent = `<img src="${item.image}" class="gallery-img" loading="lazy">`;
     }
     
@@ -320,7 +309,6 @@ function updateModal(item) {
 
     const container = document.getElementById('mediaContainer');
     if (item.type === 'video') {
-        // Kontrol lengkap untuk modal popup
         container.innerHTML = `<video src="${item.videoUrl}" controls autoplay loop style="max-width:100%; max-height:100%;"></video>`;
     } else {
         container.innerHTML = `<img src="${item.image}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
