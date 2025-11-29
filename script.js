@@ -1,5 +1,8 @@
-// --- 1. DATA DUMMY (DIPERBANYAK & DIPERBAIKI) ---
+/* =========================================
+   1. DATA DUMMY (DATABASE PROMPT)
+   ========================================= */
 const galleryData = [
+    // --- GAMBAR (IMAGES) ---
     { 
         id: 1, 
         title: "Neon Cyber Samurai", 
@@ -42,7 +45,7 @@ const galleryData = [
         category: "cloud", 
         model: "Midjourney v5", 
         type: "image", 
-        image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=1000&auto=format&fit=crop", 
+        image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=1000&auto-format&fit=crop", 
         prompt: "Futuristic city skyline at night, flying cars, neon signs, rainy streets, blade runner vibe" 
     },
     { 
@@ -54,6 +57,9 @@ const galleryData = [
         image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto-format&fit=crop", 
         prompt: "Anime style illustration, girl running with toast in mouth, school uniform, morning sunlight, makoto shinkai style" 
     },
+
+    // --- VIDEO (MENGGUNAKAN FILE LOKAL) ---
+    // Pastikan nama file di laptop/GitHub sama persis (huruf kecil semua)
     { 
         id: 7, 
         title: "Ocean Drone Shot", 
@@ -61,7 +67,7 @@ const galleryData = [
         model: "Sora", 
         type: "video", 
         image: "https://images.unsplash.com/photo-1497436072909-60f360e1d4b0?q=80&w=1000&auto=format&fit=crop", 
-        videoUrl: "https://player.vimeo.com/external/369069634.sd.mp4?s=12345&profile_id=164", 
+        videoUrl: "vidio1.mp4", 
         prompt: "Aerial drone shot of crashing waves on a rocky cliff, sunset lighting, 4k resolution, smooth motion" 
     },
     { 
@@ -71,7 +77,7 @@ const galleryData = [
         model: "Runway Gen-2", 
         type: "video", 
         image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1000&auto-format&fit=crop", 
-        videoUrl: "https://player.vimeo.com/external/494294065.sd.mp4?s=12345&profile_id=164", 
+        videoUrl: "vidio2.mp4", 
         prompt: "Liquid colors swirling and mixing, ink in water, slow motion, macro shot, vibrant colors, abstract art" 
     },
     { 
@@ -80,8 +86,8 @@ const galleryData = [
         category: "cloud", 
         model: "Pika Labs", 
         type: "video", 
-        image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1000&auto=format&fit=crop", 
-        videoUrl: "https://player.vimeo.com/external/371836158.sd.mp4?s=12345&profile_id=164", 
+        image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1000&auto-format&fit=crop", 
+        videoUrl: "vidio3.mp4", 
         prompt: "Timelapse of city traffic at night, light trails, busy street, hyperlapse style" 
     },
     { 
@@ -90,19 +96,21 @@ const galleryData = [
         category: "local", 
         model: "AnimateDiff", 
         type: "video", 
-        image: "https://images.unsplash.com/photo-1448375240586-dfd8d3cd5e64?q=80&w=1000&auto=format&fit=crop", 
-        videoUrl: "https://player.vimeo.com/external/434045526.sd.mp4?s=12345&profile_id=164", 
+        image: "https://images.unsplash.com/photo-1448375240586-dfd8d3cd5e64?q=80&w=1000&auto-format&fit=crop", 
+        videoUrl: "vidio4.mp4", 
         prompt: "Peaceful morning in a forest, sunbeams through trees, slight wind moving leaves, cinematic 4k" 
     }
 ];
 
-// --- 2. GLOBAL VARIABLES ---
+/* =========================================
+   2. VARIABEL GLOBAL & INIT
+   ========================================= */
 let currentData = [...galleryData]; 
 let currentIndex = 0;
 let favorites = JSON.parse(localStorage.getItem('favPrompts')) || [];
 let isDarkMode = localStorage.getItem('theme') !== 'light';
 
-// --- 3. INITIALIZATION ---
+// Dijalankan saat website pertama kali dibuka
 window.onload = () => { 
     applyTheme(); 
     showPage('home'); 
@@ -110,21 +118,28 @@ window.onload = () => {
     renderGallery(galleryData); 
 };
 
-// --- SCROLL TO TOP LOGIC ---
+/* =========================================
+   3. FITUR: SCROLL TO TOP
+   ========================================= */
 window.onscroll = function() { scrollFunction() };
+
 function scrollFunction() {
     const btn = document.getElementById("scrollTopBtn");
+    // Muncul jika scroll lebih dari 300px
     if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
         btn.style.display = "block";
     } else {
         btn.style.display = "none";
     }
 }
+
 function scrollToTop() {
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
-// --- 4. THEME LOGIC ---
+/* =========================================
+   4. FITUR: DARK MODE / THEME
+   ========================================= */
 function toggleTheme() { 
     isDarkMode = !isDarkMode; 
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light'); 
@@ -142,21 +157,29 @@ function applyTheme() {
     }
 }
 
-// --- 5. NAVIGATION LOGIC ---
+/* =========================================
+   5. NAVIGASI HALAMAN
+   ========================================= */
 function showPage(pageId) {
     window.scrollTo({top:0, behavior:'smooth'});
+    
+    // Sembunyikan semua halaman
     document.querySelectorAll('.main-page-content').forEach(p => p.classList.remove('active'));
+    // Tampilkan halaman yang dipilih
     document.getElementById(pageId + '-page').classList.add('active');
-   document.querySelectorAll('.page-nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
-
+    
+    // Update status tombol aktif di Header
+    document.querySelectorAll('.page-nav-btn, .icon-btn').forEach(b => b.classList.remove('active'));
     const btn = document.querySelector(`button[onclick="showPage('${pageId}')"]`);
-
     if(btn) btn.classList.add('active');
-    if(btn) btn.classList.add('active');
+    
+    // Reset filter jika kembali ke Home
     if(pageId==='home') resetFilter();
 }
 
-// --- 6. GALLERY & CARD LOGIC ---
+/* =========================================
+   6. RENDER GALERI & KARTU
+   ========================================= */
 function scrollGallery(id, val) {
     document.getElementById(id).scrollBy({ left: val, behavior: 'smooth' });
 }
@@ -164,12 +187,15 @@ function scrollGallery(id, val) {
 function renderGallery(data) {
     const imageGrid = document.getElementById('imageGrid');
     const videoGrid = document.getElementById('videoGrid');
+    
+    // Kosongkan isi galeri sebelum diisi ulang
     imageGrid.innerHTML = ''; 
     videoGrid.innerHTML = '';
     
     const images = data.filter(i => i.type === 'image');
     const videos = data.filter(i => i.type === 'video');
     
+    // Render Bagian Gambar
     if(images.length > 0) {
         document.getElementById('imageSectionContainer').style.display='block';
         images.forEach(item => imageGrid.appendChild(createCard(item)));
@@ -177,6 +203,7 @@ function renderGallery(data) {
         document.getElementById('imageSectionContainer').style.display='none';
     }
 
+    // Render Bagian Video
     if(videos.length > 0) {
         document.getElementById('videoSectionContainer').style.display='block';
         videos.forEach(item => videoGrid.appendChild(createCard(item)));
@@ -184,6 +211,7 @@ function renderGallery(data) {
         document.getElementById('videoSectionContainer').style.display='none';
     }
 
+    // Tampilkan pesan jika kosong
     if(images.length===0 && videos.length===0) {
         document.getElementById('emptyState').style.display='block';
     } else {
@@ -214,16 +242,20 @@ function createCard(item) {
     `;
     
     div.onclick = (e) => { 
+        // Cegah klik kartu jika yang diklik adalah tombol love
         if(!e.target.closest('.btn-fav')) openModal(item); 
     };
     
     return div;
 }
 
-// --- 7. FILTER & SEARCH ---
+/* =========================================
+   7. FILTER & PENCARIAN
+   ========================================= */
 function filterByModel(cat, el) {
     document.querySelectorAll('.model-card').forEach(c=>c.classList.remove('active')); 
     if(el) el.classList.add('active');
+    
     currentData = galleryData.filter(i=>i.category===cat); 
     renderGallery(currentData);
 }
@@ -240,13 +272,16 @@ function showOnlyFavorites() {
     renderGallery(currentData);
 }
 
+// Event Listener untuk Search Bar
 document.getElementById('searchInput').addEventListener('input', (e) => {
     const t = e.target.value.toLowerCase();
     currentData = galleryData.filter(i => i.title.toLowerCase().includes(t) || i.prompt.toLowerCase().includes(t));
     renderGallery(currentData);
 });
 
-// --- 8. FAVORITE LOGIC ---
+/* =========================================
+   8. FITUR FAVORIT (LOCALSTORAGE)
+   ========================================= */
 function toggleFavorite(e, id) {
     e.stopPropagation();
     if(favorites.includes(id)) {
@@ -255,12 +290,18 @@ function toggleFavorite(e, id) {
         favorites.push(id);
     }
     localStorage.setItem('favPrompts', JSON.stringify(favorites));
+    
+    // Update Angka di Stats
     document.getElementById('statFavorites').innerText = favorites.length;
+    
+    // Toggle efek visual tombol
     const btn = e.currentTarget; 
     btn.classList.toggle('active');
 }
 
-// --- 9. MODAL DETAIL ---
+/* =========================================
+   9. MODAL POPUP (DETAIL PROMPT)
+   ========================================= */
 const modal = document.getElementById('detailModal');
 
 function openModal(item) {
@@ -271,10 +312,12 @@ function openModal(item) {
 }
 
 function updateModal(item) {
+    // Isi Data Teks
     document.getElementById('modalTitle').innerText = item.title;
     document.getElementById('modalPrompt').innerText = item.prompt;
     document.getElementById('modalModelDetail').innerHTML = `<i class="fas fa-layer-group"></i> Model: <strong>${item.model}</strong>`;
 
+    // Atur Badge Kategori di dalam Modal
     const badge = document.getElementById('modalBadge');
     if (item.category === 'cloud') {
         badge.innerText = 'PUBLIC CLOUD AI';
@@ -286,10 +329,13 @@ function updateModal(item) {
         badge.style.color = '#000000';
     }
 
+    // Atur Media (Gambar / Video Lokal)
     const container = document.getElementById('mediaContainer');
     if (item.type === 'video') {
+        // Render Video Player
         container.innerHTML = `<video src="${item.videoUrl}" controls autoplay loop style="max-width:100%; max-height:100%;"></video>`;
     } else {
+        // Render Gambar
         container.innerHTML = `<img src="${item.image}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
     }
 }
@@ -313,17 +359,22 @@ function closeModal() {
     document.getElementById('mediaContainer').innerHTML=''; 
 }
 
-// --- 10. MODAL SPEK PC ---
+/* =========================================
+   10. MODAL SPESIFIKASI PC
+   ========================================= */
 const sysReq = document.getElementById('sysReqModal');
 function openSysReqModal() { sysReq.classList.add('active'); }
 function closeSysReqModal() { sysReq.classList.remove('active'); }
 
+// Tutup modal jika klik di luar area konten
 window.onclick = (e) => { 
     if(e.target===modal) closeModal(); 
     if(e.target===sysReq) closeSysReqModal(); 
 }
 
-// --- 11. STATS ANIMATION ---
+/* =========================================
+   11. ANIMASI ANGKA STATISTIK
+   ========================================= */
 function animateStats() {
     document.querySelectorAll('.stat-number').forEach(el => {
         if(el.id === 'statFavorites') {
@@ -344,14 +395,39 @@ function animateStats() {
     });
 }
 
-// --- 12. UTILS ---
+/* =========================================
+   12. UTILS & FORM SUBMIT
+   ========================================= */
 function showToast(msg) {
     const t = document.getElementById('toast');
     document.getElementById('toastMessage').innerText = msg;
     t.classList.add('show'); 
     setTimeout(()=>t.classList.remove('show'), 3000);
 }
-function copyPrompt() { navigator.clipboard.writeText(document.getElementById('modalPrompt').innerText); showToast('Disalin!'); }
-function simulateDownload() { showToast('Mengunduh...'); }
-function handleContactSubmit(e) { e.preventDefault(); showToast('Pesan Terkirim!'); e.target.reset(); }
-function handleReviewSubmit(e) { e.preventDefault(); showToast('Review Terkirim!'); e.target.reset(); }
+
+function copyPrompt() { 
+    navigator.clipboard.writeText(document.getElementById('modalPrompt').innerText); 
+    showToast('Disalin!'); 
+}
+
+function simulateDownload() { 
+    showToast('Mengunduh...'); 
+}
+
+function handleContactSubmit(e) { 
+    e.preventDefault(); 
+    showToast('Pesan Terkirim!'); 
+    e.target.reset(); 
+}
+
+function handleReviewSubmit(e) { 
+    e.preventDefault(); 
+    showToast('Review Terkirim!'); 
+    e.target.reset(); 
+}
+
+function handleFeedbackSubmit(e) { 
+    e.preventDefault(); 
+    showToast('Masukan Anda telah diterima. Terima kasih!'); 
+    e.target.reset(); 
+}
