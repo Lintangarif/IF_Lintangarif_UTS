@@ -12,7 +12,7 @@ https://www.figma.com/design/nfExcV7h0ryObEs4EZg1ED/Untitled?node-id=0-1&t=PsTT0
 
 ## 🔗 Link Demo Aplikasi
 Website ini sudah di-hosting dan dapat diakses melalui link berikut:  
-https://lintangarif.github.io/IF_Lintangarif_UTS/
+https://lintangarif.github.io/IF_Lintangarifsetianda_UTS/
 
 ## Deskripsi Proyek
 PromptKU adalah platform berbasis web yang dirancang untuk membantu kreator menemukan dan membagikan prompt Generative AI (seperti Midjourney, Stable Diffusion, dll). Website ini dikembangkan dengan pendekatan High-Fidelity dari desain Figma ke kode.
